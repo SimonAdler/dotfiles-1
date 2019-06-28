@@ -57,10 +57,10 @@ git: brew
 
 npm:
 	if ! [ -d $(NVM_DIR)/.git ]; then git clone https://github.com/creationix/nvm.git $(NVM_DIR); fi
-	. $(NVM_DIR)/nvm.sh; nvm install --lts
+	. $(NVM_DIR)/nvm.sh; nvm reinstall-packages --lts
 
-ruby: brew
-	brew install ruby
+# ruby: brew
+# 	brew install ruby
 
 brew-packages: brew
 	brew bundle --file=$(DOTFILES_DIR)/install/Brewfile

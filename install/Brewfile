@@ -28,3 +28,7 @@ brew "ssh-copy-id"
 brew "stow"
 brew "tree"
 brew "wget"
+brew  "node"
+brew  "watchman"
+brew tap AdoptOpenJDK/openjdk
+brew  "yarn"

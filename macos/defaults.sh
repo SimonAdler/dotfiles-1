@@ -19,13 +19,12 @@ sudo scutil --set LocalHostName "$COMPUTER_NAME"
 sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.smb.server NetBIOSName -string "$COMPUTER_NAME"
 
 # Set language and text formats
-defaults write NSGlobalDomain AppleLanguages -array "en" "nl"
-defaults write NSGlobalDomain AppleLocale -string "en_US@currency=EUR"
+defaults write NSGlobalDomain AppleLanguages -array "en-GB"
 defaults write NSGlobalDomain AppleMeasurementUnits -string "Centimeters"
 defaults write NSGlobalDomain AppleMetricUnits -bool true
 
 # Set the timezone (see `sudo systemsetup -listtimezones` for other values)
-sudo systemsetup -settimezone "Europe/Amsterdam" > /dev/null
+sudo systemsetup -settimezone "Europe/London" > /dev/null
 
 # Set standby delay to 24 hours (default is 1 hour)
 sudo pmset -a standbydelay 86400
@@ -35,9 +34,6 @@ sudo pmset -a sms 0
 
 # Disable audio feedback when volume is changed
 defaults write com.apple.sound.beep.feedback -bool false
-
-# Disable the sound effects on boot
-sudo nvram SystemAudioVolume=" "
 
 # Menu bar: disable transparency
 defaults write com.apple.universalaccess reduceTransparency -bool true
@@ -71,15 +67,6 @@ defaults write com.apple.LaunchServices LSQuarantine -bool false
 # Disable Resume system-wide
 defaults write com.apple.systempreferences NSQuitAlwaysKeepsWindows -bool false
 
-# Disable the crash reporter
-defaults write com.apple.CrashReporter DialogType -string "none"
-
-# Restart automatically if the computer freezes
-sudo systemsetup -setrestartfreeze on
-
-# Disable Notification Center and remove the menu bar icon
-launchctl unload -w /System/Library/LaunchAgents/com.apple.notificationcenterui.plist 2> /dev/null
-
 ###############################################################################
 # Keyboard & Input                                                            #
 ###############################################################################
@@ -87,10 +74,6 @@ launchctl unload -w /System/Library/LaunchAgents/com.apple.notificationcenterui.
 # Disable smart quotes and dashes as they’re annoying when typing code
 defaults write NSGlobalDomain NSAutomaticQuoteSubstitutionEnabled -bool false
 defaults write NSGlobalDomain NSAutomaticDashSubstitutionEnabled -bool false
-
-# Enable full keyboard access for all controls
-# (e.g. enable Tab in modal dialogs)
-defaults write NSGlobalDomain AppleKeyboardUIMode -int 3
 
 # Disable press-and-hold for keys in favor of key repeat
 defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
@@ -105,9 +88,6 @@ defaults write com.apple.BezelServices kDim -bool true
 # Turn off keyboard illumination when computer is not used for 5 minutes
 defaults write com.apple.BezelServices kDimTime -int 300
 
-# Disable auto-correct
-defaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool false
-
 # Follow the keyboard focus while zoomed in
 defaults write com.apple.universalaccess closeViewZoomFollowsFocus -bool true
 
@@ -120,12 +100,6 @@ defaults write com.apple.AppleMultitouchTrackpad Clicking -bool true
 defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Clicking -bool true
 defaults -currentHost write NSGlobalDomain com.apple.mouse.tapBehavior -int 1
 defaults write NSGlobalDomain com.apple.mouse.tapBehavior -int 1
-
-# Trackpad: map bottom right corner to right-click
-defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadCornerSecondaryClick -int 2
-defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadRightClick -bool true
-defaults -currentHost write NSGlobalDomain com.apple.trackpad.trackpadCornerClickBehavior -int 1
-defaults -currentHost write NSGlobalDomain com.apple.trackpad.enableSecondaryClick -bool true
 
 # Trackpad: swipe between pages with three fingers
 defaults write NSGlobalDomain AppleEnableSwipeNavigateWithScrolls -bool true
@@ -190,20 +164,12 @@ defaults write com.apple.finder _FXShowPosixPathInTitle -bool true
 # Keep folders on top when sorting by name
 defaults write com.apple.finder _FXSortFoldersFirst -bool true
 
-# When performing a search, search the current folder by default
-defaults write com.apple.finder FXDefaultSearchScope -string "SCcf"
-
 # Disable the warning when changing a file extension
 defaults write com.apple.finder FXEnableExtensionChangeWarning -bool false
 
 # Avoid creating .DS_Store files on network or USB volumes
 defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
 defaults write com.apple.desktopservices DSDontWriteUSBStores -bool true
-
-# Disable disk image verification
-defaults write com.apple.frameworks.diskimages skip-verify -bool true
-defaults write com.apple.frameworks.diskimages skip-verify-locked -bool true
-defaults write com.apple.frameworks.diskimages skip-verify-remote -bool true
 
 # Use AirDrop over every interface.
 defaults write com.apple.NetworkBrowser BrowseAllInterfaces -bool true
@@ -245,9 +211,6 @@ defaults write com.apple.dock wvous-tr-corner -int 0
 defaults write com.apple.dock wvous-bl-corner -int 0
 defaults write com.apple.dock wvous-br-corner -int 0
 
-# Don't show recently used applications in the Dock
-defaults write com.Apple.Dock show-recents -bool false
-
 ###############################################################################
 # Mail                                                                        #
 ###############################################################################
@@ -265,25 +228,6 @@ defaults write com.apple.mail AddressesIncludeNameOnPasteboard -bool false
 # Disable inline attachments (just show the icons)
 defaults write com.apple.mail DisableInlineAttachmentViewing -bool true
 
-# Disable automatic spell checking
-defaults write com.apple.mail SpellCheckingBehavior -string "NoSpellCheckingEnabled"
-
-# Disable sound for incoming mail
-defaults write com.apple.mail MailSound -string ""
-
-# Disable sound for other mail actions
-defaults write com.apple.mail PlayMailSounds -bool false
-
-# Mark all messages as read when opening a conversation
-defaults write com.apple.mail ConversationViewMarkAllAsRead -bool true
-
-# Disable includings results from trash in search
-defaults write com.apple.mail IndexTrash -bool false
-
-# Automatically check for new message (not every 5 minutes)
-defaults write com.apple.mail AutoFetch -bool true
-defaults write com.apple.mail PollTime -string "-1"
-
 # Show most recent message at the top in conversations
 defaults write com.apple.mail ConversationViewSortDescending -bool true
 
@@ -296,44 +240,6 @@ defaults write com.apple.iCal "Show Week Numbers" -bool true
 
 # Week starts on monday
 defaults write com.apple.iCal "first day of week" -int 1
-
-###############################################################################
-# Spotlight                                                                   #
-###############################################################################
-
-# Hide Spotlight tray-icon (and subsequent helper)
-#sudo chmod 600 /System/Library/CoreServices/Search.bundle/Contents/MacOS/Search
-# Disable Spotlight indexing for any volume that gets mounted and has not yet
-# been indexed before.
-# Use `sudo mdutil -i off "/Volumes/foo"` to stop indexing any volume.
-sudo defaults write /.Spotlight-V100/VolumeConfiguration Exclusions -array "/Volumes"
-# Change indexing order and disable some file types
-defaults write com.apple.spotlight orderedItems -array \
-	'{"enabled" = 1;"name" = "APPLICATIONS";}' \
-	'{"enabled" = 1;"name" = "SYSTEM_PREFS";}' \
-	'{"enabled" = 1;"name" = "DIRECTORIES";}' \
-	'{"enabled" = 1;"name" = "CONTACT";}' \
-	'{"enabled" = 1;"name" = "DOCUMENTS";}' \
-	'{"enabled" = 1;"name" = "PDF";}' \
-	'{"enabled" = 0;"name" = "FONTS";}' \
-	'{"enabled" = 0;"name" = "MESSAGES";}' \
-	'{"enabled" = 0;"name" = "EVENT_TODO";}' \
-	'{"enabled" = 0;"name" = "IMAGES";}' \
-	'{"enabled" = 0;"name" = "BOOKMARKS";}' \
-	'{"enabled" = 0;"name" = "MUSIC";}' \
-	'{"enabled" = 0;"name" = "MOVIES";}' \
-	'{"enabled" = 0;"name" = "PRESENTATIONS";}' \
-	'{"enabled" = 0;"name" = "SPREADSHEETS";}' \
-	'{"enabled" = 0;"name" = "SOURCE";}'
-
-# Load new settings before rebuilding the index
-killall mds > /dev/null 2>&1
-
-# Make sure indexing is enabled for the main volume
-sudo mdutil -i on / > /dev/null
-
-# Rebuild the index from scratch
-sudo mdutil -E / > /dev/null
 
 ###############################################################################
 # Terminal                                                                    #
@@ -370,9 +276,6 @@ defaults write com.apple.ActivityMonitor SortDirection -int 0
 
 # Enable the automatic update check
 defaults write com.apple.SoftwareUpdate AutomaticCheckEnabled -bool true
-
-# Check for software updates daily, not just once per week
-defaults write com.apple.SoftwareUpdate ScheduleFrequency -bool true
 
 # Download newly available updates in background
 defaults write com.apple.SoftwareUpdate AutomaticDownload -bool true
